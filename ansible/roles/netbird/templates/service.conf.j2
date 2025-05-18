@@ -1,0 +1,25 @@
+[Unit]
+Description={{service_pretty_name}}
+After=network.target
+
+[Service]
+Type=simple
+User={{service_name}}
+Group={{service_name}}
+LimitNOFILE=1024
+
+Restart=on-failure
+RestartSec=10
+startLimitIntervalSec=60
+
+WorkingDirectory={{service_working_dir}}
+ExecStart={{service_start_command}}
+
+PermissionsStartOnly=true
+ExecStartPre=/bin/mkdir -p {{service_log_path}}
+ExecStartPre=/bin/chown syslog:adm {{service_log_path}}
+ExecStartPre=/bin/chmod 755 {{service_log_path}}
+SyslogIdentifier={{service_name}}
+
+[Install]
+WantedBy=multi-user.target

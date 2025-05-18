@@ -1,0 +1,19 @@
+- name: Pull projects
+  include_tasks: pull_projects.yml
+  tags: always
+
+- name: Install netbird relay
+  include_tasks: relay.yml
+  tags: always
+
+- name: Install netbird signal
+  include_tasks: signal.yml
+  tags: always
+
+- name: Install netbird management
+  include_tasks: management.yml
+  tags: always
+
+- name: Install netbird dashboard
+  include_tasks: dashboard.yml
+  tags: always

@@ -1,0 +1,175 @@
+server {
+    listen {{all_in_one_web_port}} ssl;
+    client_max_body_size 10M;
+    server_name {{sub_domain}}.{{pub_domain}};
+    ssl_session_timeout 1d;
+    ssl_session_cache shared:MozSSL:10m; # about {{management_port}}0 sessions
+    ssl_session_tickets off;
+    ssl_protocols TLSv1.3;
+    ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
+    ssl_prefer_server_ciphers off;
+    ssl_certificate /etc/letsencrypt/live/{{pub_domain}}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{pub_domain}}/privkey.pem;
+    ssl_client_certificate /etc/letsencrypt/live/{{pub_domain}}/chain.pem;
+    keepalive_timeout 75s;
+    access_log /var/log/nginx/{{sub_domain}}.{{pub_domain}}/access.log;
+    error_log /var/log/nginx/{{sub_domain}}.{{pub_domain}}/error.log;
+    # Relay
+    location /relay {
+        proxy_pass http://127.0.0.1:{{relay_port}};
+    }
+    # Signal
+    location /signalexchange.SignalExchange/ {
+        proxy_pass http://127.0.0.1:{{signal_port}};
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+
+    # Management
+    location /api/ {
+        proxy_pass http://127.0.0.1:{{management_port}};
+    }
+    location /management.ManagementService/ {
+        proxy_pass http://127.0.0.1:{{management_port}};
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+    # Zitadel
+    location /zitadel.admin.v1.AdminService/ {
+        grpc_pass grpc://127.0.0.1:{{zitadel_port}};
+	grpc_set_header Host $host;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+    location /admin/v1/ {
+        grpc_pass grpc://127.0.0.1:{{zitadel_port}};
+	grpc_set_header Host $host;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+    location /zitadel.auth.v1.AuthService/ {
+        grpc_pass grpc://127.0.0.1:{{zitadel_port}};
+	grpc_set_header Host $host;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+    location /auth/v1/ {
+        grpc_pass grpc://127.0.0.1:{{zitadel_port}};
+	grpc_set_header Host $host;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+    location /zitadel.management.v1.ManagementService/ {
+        grpc_pass grpc://127.0.0.1:{{zitadel_port}};
+	grpc_set_header Host $host;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+    location /management/v1/ {
+        grpc_pass grpc://127.0.0.1:{{zitadel_port}};
+	grpc_set_header Host $host;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+    location /zitadel.system.v1.SystemService/ {
+        grpc_pass grpc://127.0.0.1:{{zitadel_port}};
+	grpc_set_header Host $host;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+    location /system/v1/ {
+        grpc_pass grpc://127.0.0.1:{{zitadel_port}};
+	grpc_set_header Host $host;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+    location /assets/v1/ {
+        grpc_pass grpc://127.0.0.1:{{zitadel_port}};
+	grpc_set_header Host $host;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+    location /ui/ {
+        grpc_pass grpc://127.0.0.1:{{zitadel_port}};
+	grpc_set_header Host $host;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+    location /oidc/v1/ {
+        grpc_pass grpc://127.0.0.1:{{zitadel_port}};
+	grpc_set_header Host $host;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+    location /saml/v2/ {
+        grpc_pass grpc://127.0.0.1:{{zitadel_port}};
+	grpc_set_header Host $host;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+    location /oauth/v2/ {
+        grpc_pass grpc://127.0.0.1:{{zitadel_port}};
+	grpc_set_header Host $host;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+    location = /.well-known/openid-configuration {
+        grpc_pass grpc://127.0.0.1:{{zitadel_port}};
+	grpc_set_header Host $host;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+    location /openapi/ {
+        grpc_pass grpc://127.0.0.1:{{zitadel_port}};
+	grpc_set_header Host $host;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+    location /debug/ {
+        grpc_pass grpc://127.0.0.1:{{zitadel_port}};
+	grpc_set_header Host $host;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+    location /device/ {
+        grpc_pass grpc://127.0.0.1:{{zitadel_port}};
+	grpc_set_header Host $host;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+    location = /device {
+        grpc_pass grpc://127.0.0.1:{{zitadel_port}};
+	grpc_set_header Host $host;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+    location / {
+        proxy_pass http://127.0.0.1:{{dashboard_port}};
+	#	grpc_set_header Host $host;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}

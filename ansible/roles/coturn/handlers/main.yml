@@ -1,0 +1,15 @@
+- name: restart coturn
+  service:
+    name: coturn
+    state: restarted
+    enabled: yes
+
+- name: reload coturn
+  service:
+    name: coturn
+    state: reloaded
+
+- name: reload systemd for coturn
+  systemd:
+    name: coturn
+    daemon_reload: yes

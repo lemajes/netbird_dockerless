@@ -1,0 +1,63 @@
+- name: restart relay
+  service:
+    name: relay
+    state: restarted
+    enabled: yes
+
+- name: reload relay
+  service:
+    name: relay
+    state: reloaded
+
+- name: reload systemd for relay
+  systemd:
+    name: relay
+    daemon_reload: yes
+
+- name: restart signal
+  service:
+    name: signal
+    state: restarted
+    enabled: yes
+
+- name: reload signal
+  service:
+    name: signal
+    state: reloaded
+
+- name: reload systemd for signal
+  systemd:
+    name: signal
+    daemon_reload: yes
+
+- name: restart management
+  service:
+    name: management
+    state: restarted
+    enabled: yes
+
+- name: reload management
+  service:
+    name: management
+    state: reloaded
+
+- name: reload systemd for management
+  systemd:
+    name: management
+    daemon_reload: yes
+
+- name: restart dashboard
+  service:
+    name: dashboard
+    state: restarted
+    enabled: yes
+
+- name: reload dashboard
+  service:
+    name: dashboard
+    state: reloaded
+
+- name: reload systemd for dashboard
+  systemd:
+    name: dashboard
+    daemon_reload: yes

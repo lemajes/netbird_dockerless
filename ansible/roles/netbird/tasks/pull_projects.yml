@@ -1,0 +1,15 @@
+- name: Pull netbird
+  ansible.builtin.git:
+    repo: "https://github.com/netbirdio/netbird"
+    dest: /tmp/netbird
+    update: yes
+    version: main
+  delegate_to: localhost
+
+- name: Pull netbird dashboard
+  ansible.builtin.git:
+    repo: "https://github.com/netbirdio/dashboard"
+    dest: /tmp/netbird
+    update: yes
+    version: main
+  delegate_to: localhost

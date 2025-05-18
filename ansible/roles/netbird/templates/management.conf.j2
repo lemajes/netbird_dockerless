@@ -1,0 +1,104 @@
+{
+    "Stuns": [
+        {
+            "Proto": "udp",
+            "URI": "stun:{{sub_domain}}.{{pub_domain}}:{{coturn_port}}",
+            "Username": "",
+            "Password": ""
+        }
+    ],
+    "TURNConfig": {
+        "TimeBasedCredentials": false,
+        "CredentialsTTL": "0s",
+        "Secret": "",
+        "Turns": [
+            {
+                "Proto": "udp",
+                "URI": "turn:{{sub_domain}}.{{pub_domain}}:{{coturn_port}}",
+                "Username": "{{coturn_user}}",
+                "Password": "{{coturn_password}}"
+            }
+        ]
+    },
+    "Relay": {
+        "Addresses": [
+            "rels://{{sub_domain}}.{{pub_domain}}:{{all_in_one_web_port}}"
+        ],
+        "CredentialsTTL": "24h0m0s",
+        "Secret": "{{relay_secret}}"
+    },
+    "Signal": {
+        "Proto": "https",
+        "URI": "{{sub_domain}}.{{pub_domain}}:{{all_in_one_web_port}}",
+        "Username": "",
+        "Password": ""
+    },
+    "Datadir": "/var/lib/netbird/",
+    "DataStoreEncryptionKey": "{{netbird_management_datastore_encyption_key}}",
+    "HttpConfig": {
+        "AuthAudience": "{{zitadel_client_id}}",
+        "AuthIssuer": "https://{{sub_domain}}.{{pub_domain}}",
+        "OIDCConfigEndpoint": "https://{{sub_domain}}.{{pub_domain}}/.well-known/openid-configuration"
+    },
+    "IdpManagerConfig": {
+        "ManagerType": "zitadel",
+        "ClientConfig": {
+            "Issuer": "https://{{sub_domain}}.{{pub_domain}}",
+            "TokenEndpoint": "https://{{sub_domain}}.{{pub_domain}}/oauth/v2/token",
+            "ClientID": "netbird",
+            "ClientSecret": "{{zitadel_client_secret}}",
+            "GrantType": "client_credentials"
+        },
+        "ExtraConfig": {
+            "ManagementEndpoint": "https://{{sub_domain}}.{{pub_domain}}/management/v1"
+        },
+        "Auth0ClientCredentials": null,
+        "AzureClientCredentials": null,
+        "KeycloakClientCredentials": null,
+        "ZitadelClientCredentials": null
+    },
+    "DeviceAuthorizationFlow": {
+        "Provider": "hosted",
+        "ProviderConfig": {
+            "ClientID": "{{zitadel_client_id}}",
+            "ClientSecret": "{{zitadel_client_secret}}",
+            "Domain": "{{sub_domain}}.{{pub_domain}}",
+            "Audience": "{{zitadel_client_id}}",
+            "TokenEndpoint": "https://{{sub_domain}}.{{pub_domain}}/oauth/v2/token",
+            "DeviceAuthEndpoint": "https://{{sub_domain}}.{{pub_domain}}/oauth/v2/device_authorization",
+            "AuthorizationEndpoint": "",
+            "Scope": "openid",
+            "UseIDToken": false,
+            "RedirectURLs": null,
+            "DisablePromptLogin": false,
+            "LoginFlag": 0
+        }
+    },
+    "PKCEAuthorizationFlow": {
+        "ProviderConfig": {
+            "ClientID": "{{zitadel_client_id}}",
+            "ClientSecret": "{{zitadel_client_secret}}",
+            "Domain": "",
+            "Audience": "{{zitadel_client_id}}",
+            "TokenEndpoint": "https://{{sub_domain}}.{{pub_domain}}/oauth/v2/token",
+            "DeviceAuthEndpoint": "",
+            "AuthorizationEndpoint": "https://{{sub_domain}}.{{pub_domain}}/oauth/v2/authorize",
+            "Scope": "openid profile email offline_access",
+            "UseIDToken": false,
+            "RedirectURLs": [
+                "http://localhost:53000/",
+                "http://localhost:54000/"
+            ],
+            "DisablePromptLogin": false,
+            "LoginFlag": 0
+        }
+    },
+    "StoreConfig": {
+        "Engine": ""
+    },
+    "ReverseProxy": {
+        "TrustedHTTPProxies": null,
+        "TrustedHTTPProxiesCount": 0,
+        "TrustedPeers": null
+    }
+}

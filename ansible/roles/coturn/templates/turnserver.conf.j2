@@ -1,0 +1,15 @@
+listening-port={{coturn_port}}
+external-ip={{coturn_external_ip}}
+tls-listening-port={{coturn_tls_port}}
+min-port={{coturn_min_port}}
+max-port={{coturn_max_port}}
+fingerprint
+lt-cred-mech
+user={{coturn_user}}:{{coturn_password}}
+realm={{coturn_realm}}
+cert=/etc/letsencrypt/live/{{pub_domain}}/cert.pem
+pkey=/etc/letsencrypt/live/{{pub_domain}}/privkey.pem
+log-file=stdout
+no-software-attribute
+pidfile="/var/tmp/turnserver.pid"
+no-cli
